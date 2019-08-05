@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="css/reset.css" rel="stylesheet" type="text/css">
+    <link href="css/button.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background: #f77b6f;
+            -moz-background-size: cover;
+            font-size: 14px;
+            font-family: "Microsoft YaHei";
+        }
+
+        h2 {
+            color: #99cccc;
+        }
+
+        button {
+            font-size: 20px;
+        }
+
+        #content ul {
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
+
+        #content ul li {
+            box-sizing: border-box;
+            display: inline-block;
+            margin-right: 20px;
+            padding-top: 20px;
+            width: 180px;
+            height: 225px;
+
+        }
+
+        #content ul li:last-child {
+            margin-right: 0;
+        }
+
+        #content ul li a {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+
+            -webkit-perspective: 800px;
+            -moz-perspective: 800px;
+
+        }
+
+        #content ul li a>div {
+            position: absolute;
+            left: 0;
+            height: 0;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            overflow: hidden;
+
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            -webkit-transition: .8s ease-in-out;
+            -moz-transition: .8s ease-in-out;
+
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+        }
+
+        #content ul li a div:first-child {
+            background: #f6f6f6 url("images/IMG_1486.JPG") no-repeat center center;
+            background-size: 180px 180px;
+            -webkit-transform: rotateY(0);
+            -moz-transform: rotateY(0);
+            -webkit-box-shadow: 0 0 20px #ffb34f;
+            -moz-box-shadow: 0 0 20px #ffb34f;
+            box-shadow: 0 0 20px #ffb34f;
+            z-index: 2;
+        }
+
+        #content ul li a div:last-child {
+            background: #99cccc;
+            -webkit-transform: rotateY(180deg);
+            -moz-transform: rotateY(180deg);
+            z-index: 1;
+        }
+
+        /* <!-- 
+        #content ul li a:focus div:first-child {
+            -webkit-transform: rotateY(-180deg);
+            -moz-transform: rotateY(-180deg);
+        }
+
+        #content ul li a:focus div:last-child {
+            -webkit-transform: rotateY(0);
+            -moz-transform: rotateY(0);
+        } --> */
+
+        #content ul li a div h2 {
+            margin: 0 auto 15px;
+            padding: 15px 0;
+            width: 200px;
+            height: 16px;
+            line-height: 16px;
+            font-size: 20px;
+            text-align: center;
+            border-bottom: 1px #fff dashed;
+            color: #99cccc;
+        }
+
+        #content ul li a div p {
+            padding: 0 10px;
+            font-size: 12px;
+            text-indent: 2em;
+            line-height: 18px;
+            text-align: justify;
+
+        }
+
+        /*右边大div*/
+        #rightBox {
+            float: right;
+            width: 400px;
+            height: auto;
+            margin-right: 50px;
+        }
+
+        /*左边边大div*/
+        #leftbox {
+            float: left;
+            width: calc(100% - 500px);
+            height: auto;
+            margin-left: 50px;
+        }
+
+        /*下拉框的样式css*/
+        #turn {
+            width: 200px;
+            height: 40px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #cccccc;
+            position: relative;
+            background-size: 20px 20px;
+            background-color: rgb(255, 255, 255);
+        }
+
+        /*下拉框的伪类after样式css*/
+        #turn::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background-image: url("images/down.jpg");
+            background-size: 20px 20px;
+            background-color: rgb(255, 255, 255);
+            position: absolute;
+            right: 20px;
+            top: 27%;
+            /* pointer-events: none; */
+
+        }
+
+        /*下拉选项的css，但是测试时没有作用，待修改*/
+        #turnSelect {
+            border: none;
+            outline: none;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-left: 60px;
+            background-color: rgb(255, 255, 255);
+        }
+
+        /*在js里面写个点击li之后该li颜色变成#69a4cc，其他li颜色变成#99cccc吧*/
+        .choice-button {
+            margin-top: 50px;
+        }
+
+        .choice-button ul {
+            width: 300px;
+            height: 26.67px;
+            background-color: #99cccc;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .choice-button ul li {
+            float: left;
+            width: 100px;
+            height: 26.67px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .choice-button ul li:first-child {
+            border-radius: 5px 0 0 0;
+        }
+
+        .choice-button ul li:last-child {
+            border-radius: 0 5px 0 0;
+        }
+
+        .choice-button ul li:hover {
+            background-color: #69a4cc;
+
+        }
+
+
+        .choice-button ul li a {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .choice-button ul li a:hover {
+            text-decoration: none;
+            color: #f77b6f;
+        }
+
+        /*中奖名单的整个div*/
+        #record {
+            /* padding: 5px;
+            float: left;
+            width: 400px;
+            height: auto;
+            border: 1px solid #ffb34f;
+            border-radius: 5px;
+            background: #eff7ff; */
+            padding: 5px;
+            float: left;
+            width: 400px;
+            height: auto;
+            border: 1px solid #99cccc;
+            border-radius: 0 5px 5px 5px;
+            background: #eff7ff;
+        }
+
+        /*中奖标题*/
+        #recordTitle {
+            text-align: center;
+        }
+
+        /*中奖人员显示列表*/
+        #recordList {
+            text-align: center;
+        }
+
+        /*中奖人员显示列表中的div标签*/
+        #recordList div {
+
+            height: 30px;
+            padding: 5px;
+            margin-top: 5px;
+            border: 2px solid;
+            border-radius: 25px;
+            -moz-border-radius: 25px;
+            /* Old Firefox */
+        }
+
+        /*中奖人员显示列表中的img标签*/
+        #recordList div img {
+            margin-left: 10px;
+            padding-top: 5px;
+            float: left;
+        }
+
+        /*中奖人员显示列表中的p标签*/
+        #recordList div p {
+            margin-left: 10px;
+            padding-top: 5px;
+            float: left;
+        }
+
+        #recordList div h4 {
+            margin-left: 10px;
+            padding-top: 5px;
+            float: left;
+        }
+
+
+        /*显示全部中奖信息的按钮*/
+        #recordButton {
+
+            text-align: center;
+            padding: 5px;
+        }
+
+        /*显示本轮全部人的中奖信息的div*/
+        #center {
+            display: none;
+        }
+
+        #centerDiv {
+            position: absolute;
+            overflow-y: scroll;
+            top: 50%;
+            left: 50%;
+            margin-top: -270px;
+            margin-left: -340px;
+            padding: 20px;
+            width: 640px;
+            height: 500px;
+            border: 1px solid #99cccc;
+            border-radius: 5px;
+            background: #f0fbeb;
+            z-index: 200;
+            text-align: center;
+
+
+        }
+
+        /*禁止a标签点击*/
+        #turn_select ul li a {
+            pointer-events: none;
+        }
+
+        .close-style {
+            position: absolute;
+            height: 0px;
+            width: 0px;
+            left: 50%;
+            top: 50%;
+            margin-left: 285px;
+            margin-top: -273px;
+            content: "";
+            display: block;
+            border-width: 30px;
+            border-style: solid;
+            border-color: #99cccc #99cccc transparent transparent;
+            border-radius: 0 5px 0 0;
+            opacity: 0.7;
+            filter: alpha(opacity=70);
+            z-index: 300;
+        }
+
+        #closePop {
+            position: absolute;
+            cursor: pointer;
+            top: -20px;
+            left: 6px;
+            color: #FFFFFF;
+        }
+
+        /*显示本轮全部人的中奖信息的div标题*/
+        #centerDivTitle {
+            width: 100%;
+            height: auto;
+        }
+
+        /*显示本轮全部人的中奖信息的正文或详细内容的div*/
+        .centerDivMenu {
+            padding: 0;
+            overflow: hidden;
+            width: auto;
+            height: auto;
+
+        }
+
+        /*显示每一个中奖人员的li标签*/
+        .centerDivMenu ul li {
+            float: left;
+            width: 120px;
+            height: 150px;
+            margin-left: 5px;
+            margin-top: 5px;
+            border: 1px solid #99cccc;
+            border-radius: 3px;
+        }
+
+        .centerDivMenu ul li h2 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            color: #73b2cc;
+        }
+
+        /*显示每一个中奖人员的li标签下的p标签*/
+        .centerDivMenu ul li p {
+            margin-top: 5px;
+            color: #73b2cc;
+            font-size: 16px;
+        }
+
+        /*背景虚化div的css样式*/
+        #centerDivBackground {
+            display: none;
+        }
+
+
+        /*关闭按钮的css样式*/
+        #closeButton {
+            overflow: hidden;
+            width: auto;
+            height: auto;
+            text-align: center;
+            padding-top: 5px;
+        }
+
+        /*背景虚化的效果类*/
+        .grayout {
+            position: absolute;
+            z-index: 50;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            filter: alpha(opacity=60);
+            -moz-opacity: 0.6;
+            opacity: 0.60;
+            font-size: 70pt;
+            background-color: #999;
+            text-align: center;
+        }
+
+        .turn {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .turn .txt {
+            color: #99cccc;
+            font-size: 18px;
+            vertical-align: middle;
+        }
+
+        .turn .line {
+            display: inline-block;
+            width: 250px;
+            border: 1px solid #99cccc;
+        }
+
+        .title {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .title h1 {
+            color: #ffffff;
+            font-size: 50px;
+        }
+
+        .leftDiv-center button {
+            float: right;
+            margin-right: 40%;
+            margin-top: 100px;
+        }
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="api.js"></script>
+    <script>
+
+     
+
+        getRuleList(1)
+        getAllRulePeople(1)
+
+
+        getTurnRuleList(1, 1)
+        getTurnBeRecord(1)
+        var startFlag = null
+        var create = 0
+        var number = 0
+        var random = 1
+        var random1 = 1
+        var turnArray = new Array()
+        // function renovateRuleList(){
+        //     console.log(document.getElementById('turnSelect').length) 
+        //     for(var i = 0;i < document.getElementById('turnSelect').length;i++){}
+        // }
+        /*设置a标签不可点击*/
+        function stopA() {
+
+        }
+
+        /*开始抽奖方法*/
+        function StartRecord() {
+            number = 0
+            deleteRecordList()
+            // console.log($("#turnSelect option:selected").val())
+            getAwardUsers(1, $("#turnSelect option:selected").val());
+            getAllRuleList(1)
+            console.log(document.getElementById("turn" + ($("#turnSelect option:selected").val())))
+            // document.getElementById("turnSelectA"+($("#turnSelect option:selected").val())).style.cssText = 'pointer-events: all;'
+          
+            startFlag = setInterval(Rotate, 200);
+            $('#startbutton').hide()
+
+            turnArray[$("#turnSelect option:selected").val()] = true
+            $('#turnSelect').attr("disabled",true);
+            $("#turn"+$("#turnSelect option:selected").val()).attr("disabled",true);
+            var turnText = $("#turn"+$("#turnSelect option:selected").val()).text()
+            $("#turn"+$("#turnSelect option:selected").val()).text(turnText +'（已抽奖）');
+            // if ($("#button").text() == "开始抽奖") {
+            //     console.log($("#button").text());
+            //     $("#button").text("停止");
+            //     startFlag = setInterval(Rotate, 200);
+            // }
+            // else if (($("#button").text() == "停止")) {
+            //     console.log(startFlag);
+            //     $("#button").text("开始抽奖");
+            //     if (startFlag != null) {
+            //         clearInterval(startFlag);
+            //         startFlag == null;
+            //     }
+
+
+            // }
+
+
+        }
+
+        /*卡牌旋转的方法*/
+        function Rotate() {
+            //随机数生成
+            var contentDiv = document.getElementById("content")
+            var li = contentDiv.getElementsByTagName('li')
+
+            var ele = document.getElementById("a" + random)
+            var fd = document.getElementById("fd" + random)
+            var ld = document.getElementById("ld" + random)
+            for (var i = 1; i <= $("#turnSelect option:selected").val(); i++) {
+                document.getElementById("turnSelectA" + i).style.cssText = 'pointer-events: none;'
+
+            }
+            // for(var i = 1;i <= $("#turnSelect option:selected").val();i++){
+            //     // turnArray[$("#turnSelect option:selected").val()] == true ||
+            //     if ( li.length) {
+            //         document.getElementById("turnSelectA" + i).style.cssText = 'pointer-events: all;'
+            //     }
+            // }
+
+
+
+            if (ele && fd && ld && random < li.length + 1) {
+
+                document.getElementById("fd" + random).style.cssText = '-webkit-transform: rotateY(-180deg);-moz-transform: rotateY(-180deg);background-size: ' + 225 * 0.5 + 'px ' + 180 * 0.5 + 'px;'
+                document.getElementById("ld" + random).style.cssText = '-webkit-transform: rotateY(0); -moz-transform: rotateY(0);'
+                // fd.style.cssText = '-webkit-transform: rotateY(-180deg);-moz-transform: rotateY(-180deg);background-size: '+ 225 * 0.5+'px '+ 180 * 0.5 +'px;'
+                // ld.style.cssText = '-webkit-transform: rotateY(0); -moz-transform: rotateY(0);'
+                random++
+            }
+            else if (random >= li.length + 1) {
+                clearInterval(startFlag);
+                startFlag = setInterval(Rotate, 800);
+                if (random == li.length + 1 && random1 < li.length) {
+
+
+                    // setTimeout(function () {
+                    //     Scale(i);
+                    // }, 400);
+                    setTimeout(function () {
+                        ZoomIn(random1);
+                    }, 500);
+                    setTimeout(function () {
+                        Remove(random1);
+                        random1++
+                    }, 1100);
+
+                }
+            }
+            if (random == li.length + 1 && random1 == li.length + 1) {
+                clearInterval(startFlag);
+                $('#turnSelect').attr("disabled",false);
+                for (var i = 1; i <= $("#turnSelect option:selected").val(); i++) {
+                    if (turnArray[$("#turnSelect option:selected").val()] == true)
+                        document.getElementById("turnSelectA" + i).style.cssText = 'pointer-events: all;'
+                }
+            }
+
+            // console.log(random+"ssfaf"+random1)
+
+        }
+        /*移除卡牌的方法*/
+        function Remove(flag) {
+            // if (document.getElementById("a" + flag)) {
+            //     var recordList = document.getElementById("recordList")
+            //     var span = document.createElement('span')
+            //     var p = document.createElement('p')
+
+            //     $("#a" + flag).remove()
+            //     span.setAttribute('id', 'sp' + flag)
+            //     recordList.appendChild(span).appendChild(p)
+            //     $('p').text('一等奖：xxxx')
+
+            // }
+            var a = document.getElementById("a" + flag)
+            number++
+            console.log(number)
+            if (number > 5) {
+                document.getElementById('recordList').style.cssText = 'height: 300px;overflow-y: scroll;'
+            }
+            if (a && $('#recordListDiv' + flag)) {
+                // var recordListDiv = document.createElement('div')
+                var recordList = document.getElementById('recordList')
+                var div = document.createElement('div')
+                var h4 = document.createElement('h4')
+                var p = document.createElement('p')
+                var img = document.createElement('img')
+
+
+                div.setAttribute('id', 'div' + flag)
+                div.setAttribute('width', 'auto')
+                div.setAttribute('height', 'auto')
+
+                recordList.appendChild(div).appendChild(img)
+                recordList.appendChild(div).appendChild(h4)
+                recordList.appendChild(div).appendChild(p)
+                img.setAttribute('src', document.getElementById('ld' + flag).children[0].getAttribute('src'))
+                img.setAttribute('width', '20px')
+                img.setAttribute('height', '20px')
+                console.log($('#cardp' + flag))
+
+                h4.innerHTML = $('#cardh2' + flag).text()
+
+                p.innerHTML = $('#cardp' + flag).text()
+
+
+                p.setAttribute('width', 'auto')
+                $("#a" + flag).remove()
+                // if (document.getElementById('cardh2' + flag).innerText) {
+                //     for (var i = 1; i <= document.getElementsByName('中奖名单')[0].id; i++) {
+
+                //         if (document.getElementById('recordListh4' + i) && document.getElementById('cardh2' + flag)) {
+                //             console.log(document.getElementById('cardh2' + flag).innerText)
+                //             console.log(document.getElementById('recordListh4' + i).innerText)
+                //             if (document.getElementById('cardh2' + flag).innerText == document.getElementById('recordListh4' + i).innerText) {
+                //                 $('#recordListDiv' + i).show()
+                //                 $('#a' + flag).remove()
+                //             }
+                //             else
+                //                 continue
+                //         }
+
+                //     }
+
+
+                // }
+
+
+
+
+
+            }
+
+        }
+        /*卡牌放大的方法*/
+        function Scale(flag) {
+            var obj = document.getElementById("a" + flag);
+            if (obj) {
+                obj.style.cssText = 'transition: All 0.4s ease-in-out;transform:scale(2,2);z-index:4;'
+            }
+        }
+        /*卡牌移动的方法*/
+        function ZoomIn(flag) {
+
+            var obj = document.getElementById("a" + flag);
+
+            if (obj) {
+                var clientWidth = $("#record").offset().left;
+                var clientHeight = $("#record").offset().top;
+                console.log(clientWidth + "zzzz" + clientHeight);
+                var objWidth = $("#a" + flag).offset().left;
+                var objHeight = $("#a" + flag).offset().top;
+                console.log(objWidth + "xxxx" + objHeight);
+                var x = (clientWidth - objWidth);
+                var y = clientHeight - objHeight;
+                console.log(x + "yyyy" + y);
+                obj.style.cssText = 'transition: All 0.4s ease-in-out;transform:translate(' + x + 'px,' + y + 'px);z-index:4;'
+            }
+
+        }
+        /*切换轮次方法，待修改*/
+        function turnRound() {
+
+            if ($("#turnSelect option:selected").text() == '第一轮') {
+                // $("#turn"+$("#turnSelect option:selected").val()).attr("disabled",true);
+                deleteRecordCard()
+                random = 1
+                random1 = 1
+                $('#startbutton').hide()
+                if (turnArray[$("#turnSelect option:selected").val()] != true) {
+
+                    $('#startbutton').show()
+
+                }
+
+            }
+            else if ($("#turnSelect option:selected").text() == '第二轮') {
+                // $("#turn"+$("#turnSelect option:selected").val()).attr("disabled",true);
+                deleteRecordCard()
+                random = 1
+                random1 = 1
+                $('#startbutton').hide()
+                if (turnArray[$("#turnSelect option:selected").val()] != true) {
+                    $('#startbutton').show()
+
+
+                }
+            }
+            else if ($("#turnSelect option:selected").text() == '第三轮') {
+                // $("#turn"+$("#turnSelect option:selected").val()).attr("disabled",true);
+                deleteRecordCard()
+                random = 1
+                random1 = 1
+                $('#startbutton').hide()
+                if (turnArray[$("#turnSelect option:selected").val()] != true) {
+                    $('#startbutton').show()
+                }
+            }
+
+        }
+        // /*自动生成卡牌方法*/
+        // function autoCreate(flag) {
+        //     var contentDiv = document.getElementById("content")
+        //     var ul = document.createElement('ul')
+        //     contentDiv.appendChild(ul)
+        //     for (var i = 1; i <= flag; i++) {
+        //         var li = document.createElement('li')
+        //         var a = document.createElement('a')
+        //         a.setAttribute('id', 'a' + i)
+        //         var firstDiv = document.createElement('div')
+        //         firstDiv.setAttribute('id', 'fd' + i)
+        //         var lastDiv = document.createElement('div')
+        //         lastDiv.setAttribute('id', 'ld' + i)
+        //         var img = document.createElement('img')
+
+        //         var h2 = document.createElement('h2')
+        //         var p = document.createElement('p')
+        //         img.setAttribute('value','cardimg'+flag)
+        //         img.setAttribute('src', 'images/cardbackground.png')
+
+        //         img.style.cssText = 'float: left;width:20px;height:20px;margin:10px 10px;'
+        //         ul.appendChild(li).appendChild(a).appendChild(firstDiv)
+        //         ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(img)
+        //         ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(h2)
+
+        //         ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(p)
+        //         h2.innerHTML = '中奖姓名'
+        //         p.innerHTML = '中奖信息'
+        //         if (flag > 10) {
+        //             firstDiv.style.cssText = 'background-size: ' + 180 * 0.5 + 'px ' + 180 * 0.5 + 'px;'
+        //             lastDiv.style.cssText = 'width:' + 180 * 0.5 + 'px;height:' + 225 * 0.5 + 'px;'
+        //             h2.style.cssText = 'width:100px;height:8px;'
+        //             p.style.cssText = 'font-size:8px;'
+        //             li.style.cssText = 'width:' + 180 * 0.5 + 'px;height:' + 225 * 0.5 + 'px;'
+
+        //         }
+
+        //     }
+        // }
+        /*删除所有卡牌方法*/
+        function deleteRecordCard() {
+            var contentDiv = document.getElementById("content")
+
+            contentDiv.innerHTML = "";
+
+        }
+        /*删除中奖名单方法*/
+        function deleteRecordList() {
+            var recordList = document.getElementById('recordList')
+            recordList.innerHTML = "";
+        }
+
+        // /*生成全部中奖名单方法*/
+        // function createCenterRecord() {
+        //     var centerDivMenu = document.getElementById("centerDivMenu")
+        //     var ul = document.createElement('ul')
+        //     centerDivMenu.appendChild(ul);
+        //     for (var i = 1; i <= 10; i++) {
+        //         var li = document.createElement('li')
+        //         var h2 = document.createElement('h2')
+        //         var p = document.createElement('p')
+        //         ul.appendChild(li).appendChild(h2);
+        //         ul.appendChild(li).appendChild(p);
+        //         h2.innerHTML = ''
+        //         p.innerHTML = '一等奖：xxxx'
+
+        //     }
+
+
+        // }
+
+        /*删除全部中奖名单方法*/
+        function deleteRecord() {
+            var centerDiv = document.getElementById('centerDiv')
+            centerDiv.innerHTML = ""
+        }
+        /*打开全部中奖信息方法*/
+        function openCenterDiv() {
+            deleteRecord()
+            getAllRecordPeopleList(1)
+            setTimeout(function () {
+                getAllRulePeopleList(1)
+            }, 50)
+
+
+            document.getElementById("centerDivBackground").style.cssText = 'display:block;'
+            document.getElementById("center").style.cssText = 'display:inline-block;'
+        }
+        /*关闭全部中奖信息方法*/
+        function closeCenterDiv() {
+            deleteRecord()
+            document.getElementById("centerDivBackground").style.cssText = 'display:none;'
+            document.getElementById("center").style.cssText = 'display:none;'
+        }
+        function isFoucs(turn) {
+            deleteRecordList()
+
+            console.log(document.getElementsByName('中奖名单')[0].id)
+            // var turn_select_li = document.getElementById('turn_select').children[0].children[result[i].rule_id - 1]
+            //         turn_select_li.style.cssText = 'background-color: #69a4cc;'
+            getTurnRuleList(1, turn)
+            for (var i = 1; i <= document.getElementsByName('中奖名单')[0].id; i++) {
+                console.log($('#recordListDiv' + i))
+                console.log(i)
+                if ($('#recordListDiv' + i).attr('name') == turn)
+                    $('#recordListDiv' + i).show()
+                else
+                    $('#recordListDiv' + i).hide()
+
+
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="title">
+        <h1>珠海律师协会2018年会抽奖</h1>
+    </div>
+
+    <div id="leftbox">
+        <div id="content">
+
+
+            <!-- // if(turnArray[0] == null){
+
+                // }
+             
+           
+                // var contentDiv = document.getElementById("content")
+                // var ul = document.createElement('ul')
+                // contentDiv.appendChild(ul)
+                // for (var i = 1; i <= 8; i++) {
+                //     var li = document.createElement('li')
+                //     var a = document.createElement('a')
+                //     a.setAttribute('id', 'a' + i)
+                //     var firstDiv = document.createElement('div')
+                //     firstDiv.setAttribute('id', 'fd' + i)
+                //     var lastDiv = document.createElement('div')
+                //     lastDiv.setAttribute('id', 'ld' + i)
+                //     var h3 = document.createElement('h3')
+                //     var p = document.createElement('p')
+
+                //     ul.appendChild(li).appendChild(a).appendChild(firstDiv)
+                //     ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(h3)
+                //     ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(p)
+                //     $('h3').text('中奖姓名')
+                //     $('p').text('中奖信息')
+                //     $('a').css('transform','scale('+(8 / 10)+','+(8 / 10)+')')
+                    // li.style.height = window.getComputedStyle(li).height * (1 / 8) + 'px'
+                    // li.style.width = window.getComputedStyle(li).width * (1 / 8) + 'px'
+
+
+
+                // } -->
+
+
+        </div>
+
+        <!-- <div id="content"></div>
+            <script>
+                var contentDiv = document.getElementById("content")
+                var ul = document.createElement('ul')
+                contentDiv.appendChild(ul)
+                for (var i = 5; i <= 8; i++) {
+                    var li = document.createElement('li')
+                    var a = document.createElement('a')
+                    a.setAttribute('id', 'a' + i)
+                    var firstDiv = document.createElement('div')
+                    firstDiv.setAttribute('id', 'fd' + i)
+                    var lastDiv = document.createElement('div')
+                    lastDiv.setAttribute('id', 'ld' + i)
+                    var h3 = document.createElement('h3')
+                    var p = document.createElement('p')
+                    ul.appendChild(li).appendChild(a).appendChild(firstDiv)
+                    ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(h3)
+                    ul.appendChild(li).appendChild(a).appendChild(lastDiv).appendChild(p)
+                    $('h3').text('中奖姓名')
+                    $('p').text('中奖信息')
+
+                }
+            </script> -->
+
+        <div class="leftDiv-center">
+            <h1></h1>
+            <button class="button button-3d button-primary button-rounded" id="startbutton" onclick="StartRecord()"
+                type="button">开始抽奖</button>
+        </div>
+
+    </div>
+
+    <div id="rightBox">
+        <div id="turn">
+            <select id="turnSelect" onchange="turnRound()" class="button-dropdown">
+                <!-- <option value="round1">第1轮抽奖</option>
+                <option value="round2">第2轮抽奖</option>
+                <option value="round3">第3轮抽奖</option>
+                <option value="round4">第4轮抽奖</option>
+                <option value="round5">第5轮抽奖</option> -->
+            </select>
+
+        </div>
+        <div id='turn_select' class="choice-button">
+            <ul>
+                <li><a id="turnSelectA1" value='1' href="#" onfocus="isFoucs(1)">第一轮</a></li>
+                <li><a id="turnSelectA2" value='2' href="#" onfocus="isFoucs(2)">第二轮</a></li>
+                <li><a id="turnSelectA3" value='3' href="#" onfocus="isFoucs(3)">第三轮</a></li>
+            </ul>
+        </div>
+        <div id="record">
+            <div id="recordTitle">
+
+            </div>
+            <div id="recordList">
+
+
+            </div>
+            <div id="recordButton"><button class="button button-3d button-primary button-rounded" onclick="openCenterDiv()">查看全部中奖名单</button></div>
+        </div>
+    </div>
+
+
+    <div id="center">
+        <div id="centerDivBackground" class="grayout"></div>
+        <div id="centerDiv">
+            <!-- <div id="centerDivTitle">
+                <h2>中奖名单</h2>
+            </div> -->
+            <!-- <div class="turn">
+                <span class="line"></span>
+                <span class="txt">第一轮</span>
+                <span class="line"></span>
+            </div> -->
+            <!-- <div id="centerDivMenu">
+
+
+            </div> -->
+            <!-- <div class="turn">
+                <span class="line"></span>
+                <span class="txt">第二轮</span>
+                <span class="line"></span>
+            </div>
+            <div  class="turn">
+                <span class="line"></span>
+                <span class="txt">第三轮</span>
+                <span class="line"></span>
+            </div> -->
+        </div>
+        <div class="close-style">
+            <span id="closePop" onclick="closeCenterDiv()">&#10006;</span>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
